@@ -51,8 +51,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 ),
                 SizedBox(height: 25),
                 Expanded(
-                  child:
-                      BenchmarkWidget(BenchmarkType.values[controller.index]),
+                  child: BenchmarkWidget(BenchmarkType.values[controller.index]),
                 ),
               ],
             ),
@@ -201,15 +200,15 @@ class BenchmarkResult extends StatelessWidget {
         barRods: [
           BarChartRodData(
             y: max(result.intTime.toDouble(), 1),
-            color: leftBarColor,
+            colors: [leftBarColor],
             width: width,
-            isRound: true,
+            borderRadius: BorderRadius.circular(20),
           ),
           BarChartRodData(
             y: max(result.stringTime.toDouble(), 1),
-            color: rightBarColor,
+            colors: [rightBarColor],
             width: width,
-            isRound: true,
+            borderRadius: BorderRadius.circular(20),
           ),
         ],
       );
@@ -273,57 +272,57 @@ class BenchmarkResult extends StatelessWidget {
   _buildChart() {
     var maxTime = maxResultTime;
     return Container(
-      child: FlChart(
-        chart: BarChart(
-          BarChartData(
-            barTouchData: BarTouchData(
-              touchTooltipData: TouchTooltipData(
-                tooltipBgColor: Colors.grey,
-                getTooltipItems: (spots) {
-                  return spots.map((TouchedSpot spot) {
-                    return null;
-                  }).toList();
-                },
-              ),
+      child: BarChart(
+        BarChartData(
+          barTouchData: BarTouchData(
+            touchCallback: (res) {
+              return res.spot.props;
+            },
+            touchTooltipData: BarTouchTooltipData(
+              tooltipBgColor: Colors.grey,
             ),
-            maxY: maxTime.toDouble(),
-            alignment: BarChartAlignment.spaceAround,
-            titlesData: FlTitlesData(
-              show: true,
-              bottomTitles: SideTitles(
-                showTitles: true,
-                textStyle: TextStyle(
-                  color: const Color(0xff7589a2),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-                margin: 20,
-                getTitles: (double value) {
-                  return labels[value.toInt()];
-                },
-              ),
-              leftTitles: SideTitles(
-                showTitles: true,
-                textStyle: TextStyle(
-                  color: const Color(0xff7589a2),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-                margin: 32,
-                reservedSize: 50,
-                getTitles: (value) {
-                  if (value % (maxResultTime ~/ 4) == 0) {
-                    return value.toInt().toString() + 'ms';
-                  }
-                  return '';
-                },
-              ),
-            ),
-            borderData: FlBorderData(
-              show: false,
-            ),
-            barGroups: barGroups,
           ),
+          maxY: maxTime.toDouble(),
+          alignment: BarChartAlignment.spaceAround,
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: SideTitles(
+              showTitles: true,
+              getTextStyles: (value) {
+                return TextStyle(
+                  color: const Color(0xff7589a2),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                );
+              },
+              margin: 20,
+              getTitles: (double value) {
+                return labels[value.toInt()];
+              },
+            ),
+            leftTitles: SideTitles(
+              showTitles: true,
+              getTextStyles: (value) {
+                return TextStyle(
+                  color: const Color(0xff7589a2),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                );
+              },
+              margin: 32,
+              reservedSize: 50,
+              getTitles: (value) {
+                if (value % (maxResultTime ~/ 4) == 0) {
+                  return value.toInt().toString() + 'ms';
+                }
+                return '';
+              },
+            ),
+          ),
+          borderData: FlBorderData(
+            show: false,
+          ),
+          barGroups: barGroups,
         ),
       ),
     );
