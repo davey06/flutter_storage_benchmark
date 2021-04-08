@@ -26,14 +26,15 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
+          child: Container(
+            // padding: const EdgeInsets.all(4.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Center(
                   child: Text(
-                    "Hive Benchmark",
-                    style: TextStyle(fontSize: 40),
+                    "Storage Benchmark",
+                    style: TextStyle(fontSize: 30),
                   ),
                 ),
                 SizedBox(height: 15),
@@ -131,7 +132,7 @@ class _BenchmarkWidgetState extends State<BenchmarkWidget> {
         Center(
           child: RaisedButton(
             onPressed: !benchmarkRunning ? _performBenchmark : null,
-            child: Text("Benchmark"),
+            child: !benchmarkRunning ? Text("Benchmark") : CircularProgressIndicator(),
           ),
         ),
         SizedBox(height: 20),
@@ -195,7 +196,7 @@ class BenchmarkResult extends StatelessWidget {
     var x = 0;
     return results.map((result) {
       return BarChartGroupData(
-        barsSpace: 4,
+        barsSpace: 2,
         x: x++,
         barRods: [
           BarChartRodData(
@@ -271,12 +272,13 @@ class BenchmarkResult extends StatelessWidget {
 
   _buildChart() {
     var maxTime = maxResultTime;
+    print(maxTime);
     return Container(
       child: BarChart(
         BarChartData(
           barTouchData: BarTouchData(
             touchCallback: (res) {
-              return res.spot.props;
+              return res.spot != null ? res.spot.props : null;
             },
             touchTooltipData: BarTouchTooltipData(
               tooltipBgColor: Colors.grey,
@@ -292,10 +294,10 @@ class BenchmarkResult extends StatelessWidget {
                 return TextStyle(
                   color: const Color(0xff7589a2),
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 10,
                 );
               },
-              margin: 20,
+              margin: 10,
               getTitles: (double value) {
                 return labels[value.toInt()];
               },
@@ -306,13 +308,13 @@ class BenchmarkResult extends StatelessWidget {
                 return TextStyle(
                   color: const Color(0xff7589a2),
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 10,
                 );
               },
-              margin: 32,
-              reservedSize: 50,
+              margin: 2,
+              reservedSize: 35,
               getTitles: (value) {
-                if (value % (maxResultTime ~/ 4) == 0) {
+                if (value % (maxTime / 5).floor() == 0) {
                   return value.toInt().toString() + 'ms';
                 }
                 return '';
