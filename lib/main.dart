@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_benchmark/benchmark.dart';
+import 'package:storage_benchmark/benchmark.dart';
 
 void main() => runApp(App());
 

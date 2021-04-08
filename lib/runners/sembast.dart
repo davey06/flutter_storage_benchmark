@@ -1,4 +1,4 @@
-import 'package:hive_benchmark/runners/runner.dart';
+import 'package:storage_benchmark/runners/runner.dart';
 import 'package:path_provider/path_provider.dart' as paths;
 import 'package:path/path.dart' as path;
 import 'package:sembast/sembast.dart';

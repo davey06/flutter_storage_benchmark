@@ -1,4 +1,4 @@
-import 'package:hive_benchmark/runners/runner.dart';
+import 'package:storage_benchmark/runners/runner.dart';
 
 import '../sqlite_store.dart';
 

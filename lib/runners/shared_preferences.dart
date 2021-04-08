@@ -1,4 +1,4 @@
-import 'package:hive_benchmark/runners/runner.dart';
+import 'package:storage_benchmark/runners/runner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesRunner implements BenchmarkRunner {

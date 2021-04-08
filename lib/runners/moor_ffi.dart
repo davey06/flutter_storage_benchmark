@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:hive_benchmark/runners/runner.dart';
+import 'package:storage_benchmark/runners/runner.dart';
 import 'package:moor_ffi/database.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;

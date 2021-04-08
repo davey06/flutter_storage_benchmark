@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:hive_benchmark/runners/hive.dart';
-import 'package:hive_benchmark/runners/moor_ffi.dart';
-import 'package:hive_benchmark/runners/runner.dart';
-import 'package:hive_benchmark/runners/sembast.dart';
-import 'package:hive_benchmark/runners/shared_preferences.dart';
-import 'package:hive_benchmark/runners/sqflite.dart';
+import 'package:storage_benchmark/runners/hive.dart';
+import 'package:storage_benchmark/runners/moor_ffi.dart';
+import 'package:storage_benchmark/runners/runner.dart';
+import 'package:storage_benchmark/runners/sembast.dart';
+import 'package:storage_benchmark/runners/shared_preferences.dart';
+import 'package:storage_benchmark/runners/sqflite.dart';
 import 'package:random_string/random_string.dart' as randStr;
 
 const String TABLE_NAME_STR = "kv_str";
