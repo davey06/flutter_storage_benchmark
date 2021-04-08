@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:storage_benchmark/runners/runner.dart';
-import 'package:moor_ffi/database.dart';
+// import 'package:moor_ffi/database.dart';
+import 'package:sqlite3/sqlite3.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
@@ -9,7 +10,7 @@ import '../benchmark.dart';
 
 class MoorFfiRunner implements BenchmarkRunner {
   @override
-  String get name => 'SQL (ffi)';
+  String get name => 'moor';
 
   Database db;
 
@@ -23,17 +24,16 @@ class MoorFfiRunner implements BenchmarkRunner {
       await file.delete();
     }
 
-    db = Database.openFile(file);
+    // db = Database.openFile(file);
+    db = sqlite3.open(file.path);
 
-    db.execute(
-        'CREATE TABLE $TABLE_NAME_STR (key TEXT PRIMARY KEY, value TEXT)');
-    db.execute(
-        'CREATE TABLE $TABLE_NAME_INT (key TEXT PRIMARY KEY, value INTEGER)');
+    db.execute('CREATE TABLE $TABLE_NAME_STR (key TEXT PRIMARY KEY, value TEXT)');
+    db.execute('CREATE TABLE $TABLE_NAME_INT (key TEXT PRIMARY KEY, value INTEGER)');
   }
 
   @override
   Future<void> tearDown() async {
-    db.close();
+    db.dispose();
   }
 
   Future<int> _batchRead(String table, List<String> keys) async {
@@ -47,7 +47,7 @@ class MoorFfiRunner implements BenchmarkRunner {
     }
 
     s.stop();
-    stmt.close();
+    stmt.dispose();
     return s.elapsedMilliseconds;
   }
 
@@ -64,14 +64,13 @@ class MoorFfiRunner implements BenchmarkRunner {
   @override
   Future<int> batchWriteInt(Map<String, int> entries) async {
     var s = Stopwatch()..start();
-    final stmt = db.prepare(
-        'INSERT OR REPLACE INTO $TABLE_NAME_INT (key, value) VALUES (?, ?)');
+    final stmt = db.prepare('INSERT OR REPLACE INTO $TABLE_NAME_INT (key, value) VALUES (?, ?)');
 
     entries.forEach((key, value) {
       stmt.execute([key, value]);
     });
 
-    stmt.close();
+    stmt.dispose();
     s.stop();
     return s.elapsedMilliseconds;
   }
@@ -79,14 +78,13 @@ class MoorFfiRunner implements BenchmarkRunner {
   @override
   Future<int> batchWriteString(Map<String, String> entries) async {
     var s = Stopwatch()..start();
-    final stmt = db.prepare(
-        'INSERT OR REPLACE INTO $TABLE_NAME_STR (key, value) VALUES (?, ?)');
+    final stmt = db.prepare('INSERT OR REPLACE INTO $TABLE_NAME_STR (key, value) VALUES (?, ?)');
 
     entries.forEach((key, value) {
       stmt.execute([key, value]);
     });
 
-    stmt.close();
+    stmt.dispose();
     s.stop();
     return s.elapsedMilliseconds;
   }
@@ -99,7 +97,7 @@ class MoorFfiRunner implements BenchmarkRunner {
       stmt.execute([key]);
     }
 
-    stmt.close();
+    stmt.dispose();
     s.stop();
     return s.elapsedMilliseconds;
   }

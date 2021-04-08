@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:storage_benchmark/runners/get_storage.dart';
 import 'package:storage_benchmark/runners/hive.dart';
 import 'package:storage_benchmark/runners/moor_ffi.dart';
 import 'package:storage_benchmark/runners/runner.dart';
@@ -19,7 +20,20 @@ class Result {
   Result(this.runner);
 }
 
+final List<String> listPackages = [
+  GetStorageRunner().name,
+  HiveRunner(false).name,
+  HiveRunner(true).name,
+  SqfliteRunner().name,
+  SharedPreferencesRunner().name,
+  MoorFfiRunner().name,
+  SembastRunner().name,
+];
+
+List<String> choices = [];
+
 final runners = [
+  GetStorageRunner(),
   HiveRunner(false),
   HiveRunner(true),
   SqfliteRunner(),
@@ -29,7 +43,7 @@ final runners = [
 ];
 
 List<Result> _createResults() {
-  return runners.map((r) => Result(r)).toList();
+  return runners.where((e) => choices.contains(e.name)).map((r) => Result(r)).toList();
 }
 
 Map<String, int> generateIntEntries(int count) {

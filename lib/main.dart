@@ -1,10 +1,13 @@
 import 'dart:math';
 
+import 'package:chips_choice/chips_choice.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:storage_benchmark/benchmark.dart';
 
-void main() => runApp(App());
+void main() async {
+  runApp(App());
+}
 
 class App extends StatefulWidget {
   @override
@@ -17,6 +20,8 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    choices = listPackages;
+    choices.sort();
 
     controller = TabController(length: 3, vsync: this);
   }
@@ -40,8 +45,8 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                 SizedBox(height: 15),
                 TabBar(
                   tabs: <Widget>[
-                    Tab(text: "read"),
                     Tab(text: "write"),
+                    Tab(text: "read"),
                     Tab(text: "delete"),
                   ],
                   labelColor: const Color(0xff7589a2),
@@ -49,6 +54,18 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
                   onTap: (index) {
                     setState(() {});
                   },
+                ),
+                ChipsChoice<String>.multiple(
+                  value: choices,
+                  onChanged: (v) {
+                    v.sort();
+                    setState(() => choices = v);
+                  },
+                  choiceItems: C2Choice.listFrom<String, String>(
+                    source: listPackages,
+                    value: (i, v) => v,
+                    label: (i, v) => v,
+                  ),
                 ),
                 SizedBox(height: 25),
                 Expanded(
@@ -299,7 +316,7 @@ class BenchmarkResult extends StatelessWidget {
               },
               margin: 10,
               getTitles: (double value) {
-                return labels[value.toInt()];
+                return labels[(value ?? 0).toInt()];
               },
             ),
             leftTitles: SideTitles(

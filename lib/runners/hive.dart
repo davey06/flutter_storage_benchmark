@@ -37,7 +37,7 @@ class HiveRunner implements BenchmarkRunner {
     final dynamic box = lazy ? await Hive.openLazyBox('box') : await Hive.openBox('box');
     final s = Stopwatch()..start();
     for (var key in keys) {
-      box.get(key);
+      await box.get(key);
     }
     s.stop();
     await box.close();

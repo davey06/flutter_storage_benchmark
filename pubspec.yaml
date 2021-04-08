@@ -9,6 +9,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  moor: # use the latest version
+  sqlite3_flutter_libs: # Also use the latest version.
   path_provider:
   path:
   random_string:
@@ -16,12 +18,15 @@ dependencies:
   sqflite:
   shared_preferences:
   fl_chart:
-  moor_ffi:
+#  moor_ffi:
   sembast:
   get_storage:
+  chips_choice:
 
 dev_dependencies:
   flutter_rename_app:
+  moor_generator: # use the latest version
+  build_runner:
 
 flutter_rename_app:
   application_name: storage_benchmark
